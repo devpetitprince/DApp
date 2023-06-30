@@ -1,6 +1,6 @@
 const Lottery = artifacts.require("Lottery");
 const should = require("chai").should();
-const { expect } = require("chai");
+const { expect, assert } = require("chai");
 const truffleAssert = require("truffle-assertions");
 
 contract("Lottery", accounts => {
@@ -121,7 +121,7 @@ contract("Lottery", accounts => {
             console.log(`account5 balance difference: ${web3.utils.toBN(account5ETHBal_aft).sub(web3.utils.toBN(account5ETHBal_bef))}`);
         });
 
-        it.skip("Calculate winner - getRanomNumber", async () => {
+        it.skip("Calculate winner - getRandomNumber", async () => {
             const lotteryId = await lottery.lotteryId();
 
             const winner = await lottery.lotteryHistory(lotteryId - 1);
@@ -138,15 +138,15 @@ contract("Lottery", accounts => {
 
             const calculatedRandomNum = web3.utils.toBN(web3.utils.keccak256(web3.utils.encodePacked({value: await lottery.owner(), type: "address"}, {value: currentBlock.timestamp, type: "uint256"}))).toString();
             console.log(`calculated random number: ${calculatedRandomNum}`);
-            assert.equal(randomNum, calculatedRandomNum);
-
+            assert.equal(randomNum, calculatedRandomNum)
+            
             const calculatedWinnerIndex = web3.utils.toBN(calculatedRandomNum).mod(web3.utils.toBN(5)).toString();
             console.log(`calculated winner index: ${calculatedWinnerIndex}`);
 
             assert.equal(winner, accounts[Number(calculatedWinnerIndex) + 1]);
         });
 
-        it.skip("Calculate winner - getRanomNumberV2", async () => {
+        it.skip("Calculate winner - getRandomNumberV2", async () => {
             const lotteryId = await lottery.lotteryId();
 
             const winner = await lottery.lotteryHistory(lotteryId - 1);
@@ -165,9 +165,10 @@ contract("Lottery", accounts => {
             console.log(`calculated winner index: ${calculatedWinnerIndex}`);
 
             assert.equal(winner, accounts[Number(calculatedWinnerIndex) + 1]);
+
         });
 
-        it("Calculate winner - getRanomNumberV3", async () => {
+        it("Calculate winner - getRandomNumberV3", async () => {
             const lotteryId = await lottery.lotteryId();
 
             const winner = await lottery.lotteryHistory(lotteryId - 1);
@@ -193,3 +194,5 @@ contract("Lottery", accounts => {
         });
     });
 });
+
+      
